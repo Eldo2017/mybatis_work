@@ -6,32 +6,32 @@ import com.mybatis.common.template.Template;
 import com.mybatis.member.dto.Member;
 import com.mybatis.member.repository.MemberRepository;
 
-public class MemberServletImpl implements MemberService {
+public class MemberServiceImpl implements MemberService {
 	private MemberRepository mDao = new MemberRepository();
 	private SqlSession sqlSession = Template.getSqlSession();
 	
 	@Override
 	public int checkId(String userId) {
-		int res = mDao.checkId(sqlSession, userId);
+		int checkId = mDao.checkId(sqlSession, userId);
 		sqlSession.close();
-		return res;
-	}
-
-	@Override
-	public int insertMember(Member m) {
-		int res = mDao.insertMember(sqlSession, m);
-		if(res == 1) {
-			sqlSession.commit();
-		} 
-		
-		sqlSession.close();
-		return res;
+		return checkId;
 	}
 	
 	@Override
+	public int insertMember(Member m) {
+		int result = mDao.insertMember(sqlSession, m);
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		sqlSession.close();
+		return result;
+	}
+
+	@Override
 	public Member loginMember(Member m) {
-		// TODO Auto-generated method stub
-		return null;
+		Member loginUser = mDao.loginMember(sqlSession, m);
+		sqlSession.close();
+		return loginUser;
 	}
 
 	@Override

@@ -4,11 +4,29 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="memberMapper">
+	<resultMap type="Member" id="mResultSet">
+		<result column="user_id" property="userId"/>
+		<result column="user_pwd" property="userPwd"/>
+		<result column="user_name" property="userName"/>
+		<result column="email" property="email"/>
+		<result column="birthday" property="birthday"/>
+		<result column="gender" property="gender"/>
+		<result column="phone" property="phone"/>
+		<result column="address" property="address"/>
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="modify_date" property="modifyDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
   <select id="checkId" resultType="_int">
     select count(*) from member where user_id = #{userId}
   </select>
-  
-  <insert id="insertMember" parameterType="com.mybatis.member.dto.Member">
-  	insert into member values(#{userId},#{userPwd},#{userName},#{email},#{birthday},#{gender},#{phone},#{address},default,default,default)
+  <insert id="insertMember" parameterType="Member">
+  	insert into member 
+  	values(#{userId}, #{userPwd},#{userName},#{email},#{birthday},#{gender},#{phone},#{address},default,default,default)
   </insert>
+  <select id="loginMember" resultMap="mResultSet" parameterType="Member">
+  	select *
+  	  from member
+  	 where user_id=#{userId} and user_pwd=#{userPwd} and status='Y' 
+  </select>
 </mapper>

@@ -4,98 +4,72 @@ import java.sql.Date;
 
 public class Board {
 	private int boardNo;
-    private String title;
-    private String content;
-    private String writer;
-    private int readCount;
-    private Date createDate;
-    private Date modifyDate;
-    private String status;
-    
+	private String boardTitle;
+	private String boardContent;
+	private String boardWriter;
+	private int count;
+	private Date createDate;
+	private String status;
+	
 	public Board() {
-
 	}
-
-	public Board(int boardNo, String title, String content, String writer, int readCount, Date createDate,
-			Date modifyDate, String status) {
+	public Board(int boardNo, String boardTitle, String boardContent, String boardWriter, int count, Date createDate,
+			String status) {
 		this.boardNo = boardNo;
-		this.title = title;
-		this.content = content;
-		this.writer = writer;
-		this.readCount = readCount;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.boardWriter = boardWriter;
+		this.count = count;
 		this.createDate = createDate;
-		this.modifyDate = modifyDate;
 		this.status = status;
 	}
-
+	
 	public int getBoardNo() {
 		return boardNo;
 	}
-
 	public void setBoardNo(int boardNo) {
 		this.boardNo = boardNo;
 	}
-
-	public String getTitle() {
-		return title;
+	public String getBoardTitle() {
+		return boardTitle;
 	}
-
-	public void setTitle(String title) {
-		this.title = title;
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
 	}
-
-	public String getContent() {
-		return content;
+	public String getBoardContent() {
+		return boardContent;
 	}
-
-	public void setContent(String content) {
-		this.content = content;
+	public void setBoardContent(String boardContent) {
+		this.boardContent = boardContent;
 	}
-
-	public String getWriter() {
-		return writer;
+	public String getBoardWriter() {
+		return boardWriter;
 	}
-
-	public void setWriter(String writer) {
-		this.writer = writer;
+	public void setBoardWriter(String boardWriter) {
+		this.boardWriter = boardWriter;
 	}
-
-	public int getReadCount() {
-		return readCount;
+	public int getCount() {
+		return count;
 	}
-
-	public void setReadCount(int readCount) {
-		this.readCount = readCount;
+	public void setCount(int count) {
+		this.count = count;
 	}
-
 	public Date getCreateDate() {
 		return createDate;
 	}
-
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-
-	public Date getModifyDate() {
-		return modifyDate;
-	}
-
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 	@Override
 	public String toString() {
-		return "Board [boardNo=" + boardNo + ", title=" + title + ", content=" + content + ", writer=" + writer
-				+ ", readCount=" + readCount + ", createDate=" + createDate + ", modifyDate=" + modifyDate + ", status="
+		return "Board [boardNo=" + boardNo + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
+				+ ", boardWriter=" + boardWriter + ", count=" + count + ", createDate=" + createDate + ", status="
 				+ status + "]";
-	}   
+	}
 }
