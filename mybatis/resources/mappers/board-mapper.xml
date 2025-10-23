@@ -57,4 +57,25 @@
 		 like '%' || #{keyWord} || '%'
 		 order by board_no desc
 	</select>
+	<update id="increaseCount">
+		update board
+		set count = count+1
+		where board_no = #{boardNo}
+		and status = 'Y'
+	</update>
+	<select id="selectBoard">
+		select * 
+		from board
+		where board_no = #{boardNo}
+		and status = 'Y'
+	</select>
+	<select id="replyRecord">
+		select count(*)
+		from reply
+		where ref_bno = #{boardNo}
+	</select>
+	<insert id="insertReply" parameterType="com.mybatis.board.dto.Reply">
+    insert into reply (reply_no, reply_content, ref_board_no, reply_writer, create_date, status)
+    values (seq_reply_no.NEXTVAL, #{replyContent}, #{refBoardNo}, #{replyWriter}, SYSDATE, 'Y')
+</insert>
 </mapper>

@@ -76,11 +76,11 @@
 							$("#checkResult").show();
 							$("#checkResult").css("color","red")
 											 .text("중복된 아이디이니 다른 아이디를 입력하세요");
-							$("#EnrollForm:submit").attr("disabled",true);
+							$("#enrollForm:submit").attr("disabled",true);
 						} else {
 							$("#checkResult").css("color","blue")
 							 				 .text("완벽한 아이디이니 사용하셔도 됩니다");
-							$("#EnrollForm:submit").attr("disabled",false);
+							$("#enrollForm:submit").attr("disabled",false);
 						}
 					},
 					error: function() {

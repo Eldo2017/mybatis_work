@@ -13,7 +13,7 @@
 		font-size: 12px;
 	}
 	.nav-area {
-		background-color: black;
+		background-color: blueviolet;
 		color: white;
 		height: 50px;
 	}
