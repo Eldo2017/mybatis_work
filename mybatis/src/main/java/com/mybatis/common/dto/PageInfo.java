@@ -1,4 +1,3 @@
-
 package com.mybatis.common.dto;
 
 public class PageInfo {

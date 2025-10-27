@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
 	#list-area table {
 		border:1px solid;
@@ -66,7 +67,16 @@
 			</table>
 		</div>
 		<br>
+
+		<c:if test="${loginUser != null}">
+			<div align="center">
+				<form action="boardInsertForm.bo">
+					<input type="submit" value="글쓰기">
+				</form>
+			</div>
+		</c:if>
 		
+		<br>
 		<div id="paging-area" align="center">
 			<c:if test="${pi.nowPage ne 1}">
 				<c:choose>
@@ -84,7 +94,7 @@
 					<c:when test="${empty keyField}">
 						<c:choose>
 							<c:when test="${p eq pi.nowPage}">
-								<a href="list.bo?nowPage=${p}" style="color:#F361A6">[${p}]</a>
+								<a href="list.bo?nowPage=${p}" style="color:orange">[${p}]</a>
 							</c:when>
 							<c:otherwise>
 								<a href="list.bo?nowPage=${p}">[${p}]</a>
@@ -94,7 +104,7 @@
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${p eq pi.nowPage}">
-								<a href="search.bo?nowPage=${p}&keyField=${keyField}&keyWord=${keyWord}" style="color:#F361A6">[${p}]</a>
+								<a href="search.bo?nowPage=${p}&keyField=${keyField}&keyWord=${keyWord}" style="color:orange">[${p}]</a>
 							</c:when>
 							<c:otherwise>
 								<a href="search.bo?nowPage=${p}&keyField=${keyField}&keyWord=${keyWord}">[${p}]</a>

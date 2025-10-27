@@ -27,6 +27,6 @@
   <select id="loginMember" resultMap="mResultSet" parameterType="Member">
   	select *
   	  from member
-  	 where user_id=#{userId} and user_pwd=#{userPwd} and status='Y' 
+  	 where user_id=#{userId} and user_pwd=#{userPwd} 
   </select>
 </mapper>

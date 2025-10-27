@@ -1,5 +1,6 @@
 package com.mybatis.common.template;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.ibatis.io.Resources;
@@ -12,19 +13,11 @@ public class Template {
 		String resource = "/mybatis-config.xml";
 		
 		try {
-			InputStream st = Resources.getResourceAsStream(resource);
-			sqlSession = new SqlSessionFactoryBuilder().build(st).openSession(false);
-		} catch(Exception e) {
+			InputStream stream = Resources.getResourceAsStream(resource);
+			sqlSession = new SqlSessionFactoryBuilder().build(stream).openSession(false);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return sqlSession;
 	}
-	/*
-	 * Connection
-	 * 
-	 * close
-	 * 
-	 * commit | rollback
-	 */
 }

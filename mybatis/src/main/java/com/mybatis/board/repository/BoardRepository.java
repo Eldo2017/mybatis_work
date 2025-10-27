@@ -46,22 +46,29 @@ public class BoardRepository {
 	}
 
 	public int increaseCount(SqlSession sqlSession, int boardNo) {
-		return sqlSession.update("boardMapper.increaseCount",boardNo);
+		return sqlSession.update("boardMapper.increaseCount", boardNo);
 	}
 
 	public Board selectBoard(SqlSession sqlSession, int boardNo) {
-		return sqlSession.selectOne("boardMapper.selectBoard",boardNo);
-	}
-
-	public ArrayList<Reply> selectReplyList(SqlSession sqlSession, int boardNo) {
-		return sqlSession.selectOne("boardMapper.selectReplyList");
+		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
 	}
 
 	public int replyRecord(SqlSession sqlSession, int boardNo) {
 		return sqlSession.selectOne("boardMapper.replyRecord", boardNo);
 	}
+	
+	public ArrayList<Reply> selectReplyList(SqlSession sqlSession, int boardNo, PageInfo pi) {
+		int limit = pi.getNumPerPage();
+		int offset = (pi.getNowPage()-1)*limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return (ArrayList)sqlSession.selectList("boardMapper.selectReplyList", boardNo, rowBounds);
+	}
 
 	public int insertReply(SqlSession sqlSession, Reply r) {
-	    return sqlSession.insert("boardMapper.insertReply", r);
+		return sqlSession.insert("boardMapper.insertReply", r);
+	}
+
+	public int insertBoard(SqlSession sqlSession, Board b) {
+		return sqlSession.insert("boardMapper.insertBoard", b);
 	}
 }

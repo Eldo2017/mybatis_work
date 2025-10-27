@@ -1,13 +1,7 @@
 package com.mybatis.board.controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.mybatis.board.dto.Board;
 import com.mybatis.board.dto.Reply;
@@ -16,10 +10,16 @@ import com.mybatis.board.service.BoardServiceImpl;
 import com.mybatis.common.dto.PageInfo;
 import com.mybatis.common.template.Paging_ex;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @WebServlet("/detail.bo")
 public class BoardDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	BoardService bservice = new BoardServiceImpl();
+	BoardService bService = new BoardServiceImpl();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int nowPage = 1;
@@ -29,18 +29,44 @@ public class BoardDetailServlet extends HttpServlet {
 		
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
 		
-		int res = bservice.increaseCount(boardNo);
-
-		if(res > 0) {
-			Board b = bservice.selectBoard(boardNo);
-			System.out.println(b.getBoardTitle());
+		if(request.getSession().getAttribute("viewedBoard_"+boardNo) == null) {
+			int result = bService.increaseCount(boardNo);
+	
+			if(result > 0) {
+				request.getSession().setAttribute("viewedBoard_"+boardNo, true);
+				
+				Board b = bService.selectBoard(boardNo);
+				
+				int replyRecord = bService.replyRecord(boardNo);
+				PageInfo rpi = Paging_ex.getPageInfo(replyRecord, nowPage, 5, 2);
+				
+				ArrayList<Reply> rlist = bService.selectReplyList(boardNo, rpi);
+				
+				request.setAttribute("b", b);
+				request.setAttribute("rpi", rpi);
+				request.setAttribute("rlist", rlist);
+				
+				request.getRequestDispatcher("WEB-INF/views/board/boardDetailView.jsp")
+						.forward(request, response);
+			} else {
+				request.setAttribute("errorMsg", "상세조회 실패");
+				request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp")
+						.forward(request, response);
+			}
+		} else {
+			Board b = bService.selectBoard(boardNo);
 			
-			int replyRecord = bservice.replyRecord(boardNo);
-			PageInfo pi = Paging_ex.getPageInfo(replyRecord, nowPage, 5, 2);
-			System.out.println("댓글 개수 : " + replyRecord);
+			int replyRecord = bService.replyRecord(boardNo);
+			PageInfo rpi = Paging_ex.getPageInfo(replyRecord, nowPage, 5, 2);
 			
-			ArrayList<Reply> list = bservice.selectReplyList(boardNo, pi);
-			System.out.println("댓글 리스트 개수 : " + list.size());
+			ArrayList<Reply> rlist = bService.selectReplyList(boardNo, rpi);
+			
+			request.setAttribute("b", b);
+			request.setAttribute("rpi", rpi);
+			request.setAttribute("rlist", rlist);
+			
+			request.getRequestDispatcher("WEB-INF/views/board/boardDetailView.jsp")
+					.forward(request, response);
 		}
 	}
 

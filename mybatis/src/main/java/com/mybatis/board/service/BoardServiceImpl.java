@@ -33,14 +33,13 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int increaseCount(int boardNo) {
 		SqlSession sqlSession = getSqlSession();
-		int res = bDao.increaseCount(sqlSession, boardNo);
+		int result = bDao.increaseCount(sqlSession, boardNo);
 		
-		if(res > 0) {
+		if(result > 0) 
 			sqlSession.commit();
-		}
 		
 		sqlSession.close();
-		return res;
+		return result;
 	}
 
 	@Override
@@ -48,22 +47,22 @@ public class BoardServiceImpl implements BoardService {
 		SqlSession sqlSession = getSqlSession();
 		Board b = bDao.selectBoard(sqlSession, boardNo);
 		sqlSession.close();
-		return null;
+		return b;
 	}
 	
 	@Override
 	public int replyRecord(int boardNo) {
 		SqlSession sqlSession = getSqlSession();
-		int replyRecord = bDao.replyRecord(sqlSession, boardNo);
+		int result = bDao.replyRecord(sqlSession, boardNo);
 		sqlSession.close();
-		return replyRecord;
+		return result;
 	}
 
 	@Override
 	public ArrayList<Reply> selectReplyList(int boardNo, PageInfo pi) {
 		SqlSession sqlSession = getSqlSession();
-		ArrayList<Reply> list = bDao.selectReplyList(sqlSession,boardNo);
-		sqlSession.close(); 
+		ArrayList<Reply> list = bDao.selectReplyList(sqlSession, boardNo, pi);
+		sqlSession.close();
 		return list;
 	}
 
@@ -86,15 +85,24 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertReply(Reply r) {
 		SqlSession sqlSession = getSqlSession();
-	    int res = bDao.insertReply(sqlSession, r);
+		int result = bDao.insertReply(sqlSession, r);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		sqlSession.close();
+		return result;
+	}
 
-	    if(res > 0) {
-	        sqlSession.commit();
-	    } else {
-	        sqlSession.rollback();
-	    }
-
-	    sqlSession.close();
-	    return res;
+	@Override
+	public int insertBoard(Board b) {
+		SqlSession sqlSession = getSqlSession();
+		int result = bDao.insertBoard(sqlSession, b);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		sqlSession.close();
+		return result;
 	}
 }

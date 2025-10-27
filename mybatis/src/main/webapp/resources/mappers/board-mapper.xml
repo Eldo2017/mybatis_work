@@ -11,8 +11,16 @@
 		<result column="board_writer" property="boardWriter" />
 		<result column="count" property="count" />
 		<result column="create_date" property="createDate" />
-		<result column="status" property="status" />
 	</resultMap>
+	
+	<resultMap type="Reply" id="RelyResultSet">
+		<result column="reply_no" property="replyNo" />
+		<result column="reply_content" property="replyContent" />
+		<result column="ref_bno" property="refBno" />
+		<result column="reply_writer" property="replyWriter" />
+		<result column="create_date" property="createDate" />
+	</resultMap>
+	
 	<select id="totalRecord" resultType="_int">
 		select count(*)
 		  from board
@@ -57,25 +65,38 @@
 		 like '%' || #{keyWord} || '%'
 		 order by board_no desc
 	</select>
+	
 	<update id="increaseCount">
 		update board
-		set count = count+1
-		where board_no = #{boardNo}
-		and status = 'Y'
+		   set count = count + 1
+		 where board_no = #{boardNo}
+		   and status = 'Y' 
 	</update>
-	<select id="selectBoard">
-		select * 
-		from board
-		where board_no = #{boardNo}
-		and status = 'Y'
+	
+	<select id="selectBoard" resultMap="boardResultSet">
+		select *
+		  from board
+		 where board_no = #{boardNo}
 	</select>
-	<select id="replyRecord">
+	
+	<select id="replyRecord" resultType="_int">
 		select count(*)
-		from reply
-		where ref_bno = #{boardNo}
+		  from reply
+		 where ref_bno = #{boardNo} 
 	</select>
-	<insert id="insertReply" parameterType="com.mybatis.board.dto.Reply">
-    insert into reply (reply_no, reply_content, ref_board_no, reply_writer, create_date, status)
-    values (seq_reply_no.NEXTVAL, #{replyContent}, #{refBoardNo}, #{replyWriter}, SYSDATE, 'Y')
-</insert>
+	
+	<select id="selectReplyList" resultMap="RelyResultSet">
+		select *
+		  from reply
+		 where ref_bno = #{boardNo}
+		 order by reply_no desc
+	</select>
+	
+	<insert id="insertReply">
+		insert into reply values(seq_rno.nextval, #{replyContent}, #{refBno}, #{replyWriter}, default, default)
+	</insert>
+	
+	<insert id="insertBoard">
+		insert into board values(seq_bno.nextval, #{boardTitle}, #{boardContent}, #{boardWriter}, default, default, default)
+	</insert>
 </mapper>
